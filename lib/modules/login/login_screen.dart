@@ -1,10 +1,14 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social/layout/social_layout.dart';
 import 'package:social/modules/login/login_cubit/login_cubit.dart';
 import 'package:social/modules/login/login_cubit/login_state.dart';
 import 'package:social/modules/register/register_screen.dart';
 import 'package:social/shared/components/components.dart';
+import 'package:social/shared/components/constants.dart';
+import 'package:social/shared/get_it_helper.dart';
+import 'package:social/shared/network/local/cache_helper.dart';
 import 'package:social/shared/styles/app_strings.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -13,7 +17,7 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController(),
       passwordController = TextEditingController();
 
-  var formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -22,15 +26,23 @@ class LoginScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state is LoginSuccess) {
-            showToast(
-              message: "Login done successfully",
-              state: ToastStates.success,
+            getIt<CacheHelper>().setValue(key: 'login', value: state.uId).then(
+              (onValue) {
+                token = state.uId;
+                navigateAndFinish(
+                  context: context,
+                  widget: const SocialLayout(),
+                );
+                showToast(
+                  message: "Login done successfully",
+                  state: ToastStates.success,
+                );
+              },
             );
-          }
-          else if(state is LoginError) {
+          } else if (state is LoginError) {
             showToast(
               message: state.error,
-              state: ToastStates.success,
+              state: ToastStates.error,
             );
           }
         },
@@ -72,7 +84,8 @@ class LoginScreen extends StatelessWidget {
                       iconButtonFunction: () {
                         cubit.changeIcon();
                       },
-                      suffixIcon: cubit.isPassword ? Icons.visibility
+                      suffixIcon: cubit.isPassword
+                          ? Icons.visibility
                           : Icons.visibility_off,
                       isSuffix: true,
                       isObscure: cubit.isPassword,

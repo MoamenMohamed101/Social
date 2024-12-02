@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social/modules/login/login_screen.dart';
 import 'package:social/modules/register/register_cubit/register_cubit.dart';
 import 'package:social/modules/register/register_cubit/register_state.dart';
 import 'package:social/shared/components/components.dart';
@@ -23,6 +24,10 @@ class RegisterScreen extends StatelessWidget {
       child: BlocConsumer<RegisterCubit, RegisterState>(
         listener: (context, state) {
           if (state is RegisterSuccess) {
+            navigateAndFinish(
+              context: context,
+              widget: LoginScreen(),
+            );
             showToast(
               message: "Register done successfully",
               state: ToastStates.success,
@@ -108,6 +113,8 @@ class RegisterScreen extends StatelessWidget {
                             cubit.registerUser(
                               email: emailController.text,
                               password: passwordController.text,
+                              name: nameController.text,
+                              phone: phoneController.text
                             );
                           }
                         },
