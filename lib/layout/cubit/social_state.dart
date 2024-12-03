@@ -4,6 +4,8 @@ final class SocialInitial extends SocialState {}
 
 final class SocialChangeIndex extends SocialState {}
 
+final class SocialChangeIndexUploadPost extends SocialState {}
+
 final class SocialGetUserDataLoading extends SocialState {}
 
 final class SocialGetUserDataSuccess extends SocialState {}
