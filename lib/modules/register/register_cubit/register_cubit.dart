@@ -53,6 +53,9 @@ class RegisterCubit extends Cubit<RegisterState> {
       name,
       phone,
       password,
+      'https://i.sstatic.net/l60Hf.png',
+      'write your bio ...',
+      'https://marketplace.canva.com/EAEmBit3KfU/1/0/1600w/canva-black-flatlay-photo-motivational-finance-quote-facebook-cover-myVl9DXwcjQ.jpg',
       uId,
       false,
     );
