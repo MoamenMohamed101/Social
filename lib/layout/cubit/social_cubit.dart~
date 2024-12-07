@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:social/layout/cubit/social_state.dart';
 import 'package:social/models/user_model.dart';
 import 'package:social/modules/add_post.dart';
@@ -10,6 +12,7 @@ import 'package:social/modules/posts_screen.dart';
 import 'package:social/modules/settings_screen.dart';
 import 'package:social/shared/components/constants.dart';
 import 'package:social/shared/styles/icon_broken.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class SocialCubit extends Cubit<SocialState> {
   SocialCubit() : super(SocialInitial());
@@ -37,12 +40,41 @@ class SocialCubit extends Cubit<SocialState> {
     }
   }
 
+  File? profileImage;
+  var picker = ImagePicker();
+
+  Future<void> getProfileImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      profileImage = File(pickedFile.path);
+      emit(SocialGetProfileImageSuccess());
+    } else {
+      debugPrint('No image selected');
+      emit(SocialGetProfileImageError());
+    }
+  }
+
+  File? coverImage;
+
+  Future<void> getCoverImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      coverImage = File(pickedFile.path);
+      emit(SocialGetCoverImageSuccess());
+    } else {
+      debugPrint('No image selected');
+      emit(SocialGetCoverImageError());
+    }
+  }
+
   List<Widget> pages = [
     const FeedsScreen(),
     const ChatScreen(),
     const AddPost(),
     const PostsScreen(),
-    const SettingsScreen()
+    const SettingsScreen(),
   ];
   List<String> appBarTexts = [
     "Home",
@@ -64,6 +96,99 @@ class SocialCubit extends Cubit<SocialState> {
     ).catchError(
       (onError) {
         emit(SocialGetUserDataError());
+      },
+    );
+  }
+
+  void updateUserData({
+    required String? name,
+    required String? bio,
+    required String? phone,
+    required String? password,
+    String? profile,
+    String? cover,
+  }) {
+    emit(SocialUpdateUserDataLoading());
+    UserModel updateUserModel = UserModel(
+      name: name,
+      phone: phone,
+      bio: bio,
+      uId: userModel!.uId,
+      email: userModel!.email,
+      password: password,
+      image: profile ?? userModel!.image,
+      cover: cover ?? userModel!.cover,
+      isEmailVerified: false,
+    );
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userModel!.uId)
+        .update(updateUserModel.toMap())
+        .then(
+      (onValue) {
+        getUserData();
+      },
+    ).catchError(
+      (onError) {
+        print(onError.toString());
+        emit(SocialUpdateUserDataError());
+      },
+    );
+  }
+
+  void uploadProfileImage({
+    required String? name,
+    required String? bio,
+    required String? phone,
+    required String? password,
+}) {
+    emit(SocialUploadProfileImageLoading());
+    // save the image with the last path segment
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('users/${Uri.file(profileImage!.path).pathSegments.last}')
+        .putFile(profileImage!)
+        .then(
+      (onValue) {
+        emit(SocialUploadProfileImageSuccess());
+        onValue.ref.getDownloadURL().then((onValue) {
+          updateUserData(name: name, bio: bio, phone: phone, password: password,profile: onValue);
+        }).catchError((onError) {
+          emit(SocialUploadProfileImageError());
+        });
+      },
+    ).catchError(
+      (onError) {
+        emit(SocialUploadProfileImageError());
+      },
+    );
+  }
+
+  void uploadCoverImage(
+  {
+    required String? name,
+    required String? bio,
+    required String? phone,
+    required String? password,
+}
+      ) {
+    emit(SocialUploadCoverImageLoading());
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('users/${Uri.file(coverImage!.path).pathSegments.last}')
+        .putFile(coverImage!)
+        .then(
+      (onValue) {
+        emit(SocialUploadCoverImageSuccess());
+        onValue.ref.getDownloadURL().then((onValue) {
+          updateUserData(name: name, bio: bio, phone: phone, password: password,cover: onValue);
+        }).catchError((onError) {
+          emit(SocialUploadCoverImageError());
+        });
+      },
+    ).catchError(
+      (onError) {
+        emit(SocialUploadCoverImageError());
       },
     );
   }

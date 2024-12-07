@@ -49,15 +49,15 @@ class RegisterCubit extends Cubit<RegisterState> {
     required String uId,
   }) {
     UserModel userModel = UserModel(
-      email,
-      name,
-      phone,
-      password,
-      'https://i.sstatic.net/l60Hf.png',
-      'write your bio ...',
-      'https://marketplace.canva.com/EAEmBit3KfU/1/0/1600w/canva-black-flatlay-photo-motivational-finance-quote-facebook-cover-myVl9DXwcjQ.jpg',
-      uId,
-      false,
+      email: email,
+      name: name,
+      phone: phone,
+      password: password,
+      image: 'https://i.sstatic.net/l60Hf.png',
+      bio: 'write your bio ...',
+      cover: 'https://marketplace.canva.com/EAEmBit3KfU/1/0/1600w/canva-black-flatlay-photo-motivational-finance-quote-facebook-cover-myVl9DXwcjQ.jpg',
+      uId: uId,
+      isEmailVerified: false,
     );
     FirebaseFirestore.instance
         .collection('users')

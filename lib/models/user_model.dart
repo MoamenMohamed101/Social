@@ -2,7 +2,7 @@ class UserModel {
   String? email,name,phone,password,image,uId,bio,cover;
   bool? isEmailVerified;
 
-  UserModel(
+  UserModel({
     this.email,
     this.name,
     this.phone,
@@ -12,6 +12,7 @@ class UserModel {
     this.cover,
     this.uId,
     this.isEmailVerified,
+}
   );
 
   UserModel.fromJson(Map<String, dynamic> json) {

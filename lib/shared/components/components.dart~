@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:social/shared/styles/icon_broken.dart';
 
 Widget defaultButton({
   bool isUpper = true,
@@ -14,7 +15,6 @@ Widget defaultButton({
     Align(
       alignment: alignment,
       child: MaterialButton(
-        height: 30,
         clipBehavior: Clip.antiAlias,
         minWidth: width,
         onPressed: voidCall,
@@ -57,9 +57,9 @@ Widget defaultTextFormField({
         prefixIcon: Icon(prefixIcon),
         suffixIcon: isSuffix
             ? IconButton(
-          onPressed: iconButtonFunction,
-          icon: Icon(suffixIcon),
-        )
+                onPressed: iconButtonFunction,
+                icon: Icon(suffixIcon),
+              )
             : null,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(
@@ -74,14 +74,14 @@ void navigateAndFinish({context, widget}) => Navigator.pushAndRemoveUntil(
     MaterialPageRoute(
       builder: (context) => widget,
     ),
-        (Route<dynamic> route) => false);
+    (Route<dynamic> route) => false);
 
 void navigateTo({context, widget}) => Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (context) => widget,
-  ),
-);
+      context,
+      MaterialPageRoute(
+        builder: (context) => widget,
+      ),
+    );
 
 Widget commonTextButton({
   required String text,
@@ -125,3 +125,25 @@ Color getColor(ToastStates toastStates) {
   }
   return color;
 }
+
+PreferredSizeWidget? defaultAppBar({
+  required String title,
+  List<Widget>? actions,
+  TextStyle? style,
+  bool whatLeading = false,
+  required BuildContext context,
+}) =>
+    AppBar(
+      titleSpacing: 0.0,
+      leading: whatLeading ? IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: const Icon(IconBroken.Arrow___Left_2),
+      ) : null,
+      title: Text(
+        title,
+        style: style,
+      ),
+      actions: actions,
+    );

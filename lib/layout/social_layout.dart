@@ -23,11 +23,9 @@ class SocialLayout extends StatelessWidget {
       builder: (context, state) {
         SocialCubit cubit = SocialCubit.get(context);
         return Scaffold(
-          appBar: AppBar(
-            title: Text(
-              cubit.appBarTexts[cubit.currentIndex],
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
+          appBar: defaultAppBar(
+            context: context,
+            title: cubit.appBarTexts[cubit.currentIndex],
             actions: [
               IconButton(
                 onPressed: () {},
@@ -38,6 +36,7 @@ class SocialLayout extends StatelessWidget {
                 icon: const Icon(IconBroken.Notification),
               ),
             ],
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
