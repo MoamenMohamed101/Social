@@ -124,7 +124,7 @@ class AddPost extends StatelessWidget {
                       radius: 18,
                       child: IconButton(
                         onPressed: () {
-                          cubit.deleteImage();
+
                         },
                         icon: const Icon(
                           Icons.close,

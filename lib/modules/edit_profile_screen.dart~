@@ -89,19 +89,15 @@ class EditProfileScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(right: 10, top: 10),
-                                child: CircleAvatar(
-                                  radius: 18,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      cubit.getCoverImage();
-                                    },
-                                    icon: const Icon(
-                                      IconBroken.Camera,
-                                      size: 20,
-                                    ),
+                              CircleAvatar(
+                                radius: 18,
+                                child: IconButton(
+                                  onPressed: () {
+                                    cubit.getCoverImage();
+                                  },
+                                  icon: const Icon(
+                                    IconBroken.Camera,
+                                    size: 20,
                                   ),
                                 ),
                               ),
@@ -180,7 +176,7 @@ class EditProfileScreen extends StatelessWidget {
                                     name: nameController.text,
                                     password: passwordController.text,
                                     bio: bioController.text,
-                                    phone: passwordController.text,
+                                    phone: phoneController.text,
                                   ),
                                   textSize: 15,
                                 ),

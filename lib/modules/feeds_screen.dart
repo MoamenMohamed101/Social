@@ -53,9 +53,11 @@ class FeedsScreen extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: 10,
                   itemBuilder: (BuildContext context, int index) =>
-                      buildItemBuilder(context), separatorBuilder: (BuildContext context, int index) => const SizedBox(
-                  height: 10,
-                ),
+                      buildItemBuilder(context),
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const SizedBox(
+                    height: 10,
+                  ),
                 ),
                 const SizedBox(
                   height: 8,
@@ -118,14 +120,13 @@ class FeedsScreen extends StatelessWidget {
                         ),
                         Text(
                           "January 21, 2025 at 11:00.pm",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(
-                                  fontSize: 16,
-                                  height: 1.4,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey),
+                          style:
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    fontSize: 16,
+                                    height: 1.4,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey,
+                                  ),
                         ),
                       ],
                     ),

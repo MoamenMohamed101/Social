@@ -24,6 +24,10 @@ final class SocialGetCoverImageSuccess extends SocialState {}
 
 final class SocialGetCoverImageError extends SocialState {}
 
+final class SocialCreatePostImageSuccess extends SocialState {}
+
+final class SocialCreatePostImageError extends SocialState {}
+
 final class SocialUploadCoverImageError extends SocialState {}
 
 final class SocialUploadCoverImageSuccess extends SocialState {}
@@ -35,3 +39,17 @@ final class SocialUploadProfileImageError extends SocialState {}
 final class SocialUploadProfileImageSuccess extends SocialState {}
 
 final class SocialUploadProfileImageLoading extends SocialState {}
+
+final class SocialCreatePostError extends SocialState {}
+
+final class SocialCreatePostSuccess extends SocialState {}
+
+final class SocialCreatePostLoading extends SocialState {}
+
+final class SocialCreatePostWithImageError extends SocialState {}
+
+final class SocialCreatePostWithImageSuccess extends SocialState {}
+
+final class SocialCreatePostWithImageLoading extends SocialState {}
+
+final class SocialCreatePostWithImageDelete extends SocialState {}
