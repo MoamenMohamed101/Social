@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social/layout/cubit/social_cubit.dart';
-import 'package:social/layout/cubit/social_cubit.dart';
 import 'package:social/layout/cubit/social_state.dart';
 import 'package:social/modules/edit_profile_screen.dart';
 import 'package:social/shared/components/components.dart';
-import 'package:social/shared/styles/app_assets.dart';
 import 'package:social/shared/styles/icon_broken.dart';
 
 class SettingsScreen extends StatelessWidget {

@@ -105,35 +105,35 @@ class AddPost extends StatelessWidget {
                     ),
                   ),
                 ),
-                if(cubit.postImage != null)
-                Stack(
-                  alignment: Alignment.topRight,
-                  children: [
-                    Container(
-                      height: 170,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        image: DecorationImage(
-                          image: FileImage(cubit.postImage!),
-                          fit: BoxFit.cover,
+                if (cubit.postImage != null)
+                  Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      Container(
+                        height: 170,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            image: FileImage(cubit.postImage!),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                    CircleAvatar(
-                      radius: 18,
-                      child: IconButton(
-                        onPressed: () {
-                          cubit.deleteImage();
-                        },
-                        icon: const Icon(
-                          Icons.close,
-                          size: 20,
+                      CircleAvatar(
+                        radius: 18,
+                        child: IconButton(
+                          onPressed: () {
+                            cubit.deleteImage();
+                          },
+                          icon: const Icon(
+                            Icons.close,
+                            size: 20,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
                 Row(
                   children: [
                     Expanded(

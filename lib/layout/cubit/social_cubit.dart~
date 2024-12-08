@@ -305,6 +305,7 @@ class SocialCubit extends Cubit<SocialState> {
         .collection('likes')
         .doc(userModel!.uId)
         .set({'like': true}).then((onValue) {
+          getUserPosts();
       emit(SocialCreateLikePostSuccess());
     }).catchError(
       (onError) {
