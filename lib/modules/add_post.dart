@@ -14,7 +14,7 @@ class AddPost extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialState>(
       listener: (context, state) {
-        // TODO: implement listener
+
       },
       builder: (context, state) {
         SocialCubit cubit = SocialCubit.get(context);

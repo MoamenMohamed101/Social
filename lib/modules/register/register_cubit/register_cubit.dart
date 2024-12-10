@@ -21,8 +21,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         .createUserWithEmailAndPassword(
       email: email,
       password: password,
-    )
-        .then(
+    ).then(
       (onValue) {
         createUser(
           email: email,
@@ -36,7 +35,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     ).catchError(
       (onError) {
         debugPrint(onError.toString());
-        emit(RegisterSuccess());
+        emit(RegisterError());
       },
     );
   }

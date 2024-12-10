@@ -12,6 +12,12 @@ final class SocialGetUserDataSuccess extends SocialState {}
 
 final class SocialGetUserDataError extends SocialState {}
 
+final class SocialGetAllUserDataLoading extends SocialState {}
+
+final class SocialGetAllUserDataSuccess extends SocialState {}
+
+final class SocialGetAllUserDataError extends SocialState {}
+
 final class SocialGetUserPostsLoading extends SocialState {}
 
 final class SocialGetUserPostsSuccess extends SocialState {}
@@ -65,3 +71,17 @@ final class SocialCreateLikePostSuccess extends SocialState {}
 final class SocialCreateLikePostLoading extends SocialState {}
 
 final class SocialCreateLikePostDelete extends SocialState {}
+
+final class SocialSignOutSuccess extends SocialState {}
+
+final class SocialSignOutLoading extends SocialState {}
+
+final class SocialSignOutError extends SocialState {}
+
+final class SocialSendMessageSuccess extends SocialState {}
+
+final class SocialSendMessageError extends SocialState {}
+
+final class SocialGetMessageSuccess extends SocialState {}
+
+final class SocialGetMessageError extends SocialState {}

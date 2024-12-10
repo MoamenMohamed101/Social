@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social/layout/cubit/social_cubit.dart';
 import 'package:social/layout/cubit/social_state.dart';
 import 'package:social/modules/edit_profile_screen.dart';
+import 'package:social/modules/login/login_screen.dart';
 import 'package:social/shared/components/components.dart';
+import 'package:social/shared/get_it_helper.dart';
+import 'package:social/shared/network/local/cache_helper.dart';
 import 'package:social/shared/styles/icon_broken.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -12,9 +15,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         SocialCubit cubit = SocialCubit.get(context);
         return Padding(
@@ -159,8 +160,20 @@ class SettingsScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: () {},
-                      child: const Text('Add Photos'),
+                      onPressed: () {
+                        cubit.signOut(context);
+                        getIt<CacheHelper>().removeData('login').then((onValue) {
+                          navigateAndFinish(context: context, widget: LoginScreen());
+                          // cubit.getUserData();
+                        });
+                      },
+                      child: Text(
+                        'Logout',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(color: Colors.deepPurple),
+                      ),
                     ),
                   ),
                   const SizedBox(

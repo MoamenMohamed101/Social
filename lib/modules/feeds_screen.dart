@@ -13,62 +13,60 @@ class FeedsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
-      builder: (context, state) {
-        SocialCubit cubit = SocialCubit.get(context);
-        return ConditionalBuilder(
-          condition: state is SocialGetUserPostsSuccess || cubit.posts.isNotEmpty,
-          builder: (BuildContext context) => SingleChildScrollView(
-            child: Column(
-              children: [
-                Card(
-                  margin: const EdgeInsets.all(8),
-                  clipBehavior: Clip.antiAlias,
-                  elevation: 5,
-                  child: Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      Image(
-                        width: double.infinity,
-                        height: 250,
-                        fit: BoxFit.cover,
-                        image: AssetImage(AppAssets.coverImage),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "Share your ideas",
-                          style:
-                              Theme.of(context).textTheme.bodySmall!.copyWith(
-                                    color: Colors.white,
-                                  ),
+        listener: (context, state) {},
+        builder: (context, state) {
+          SocialCubit cubit = SocialCubit.get(context);
+          return ConditionalBuilder(
+            condition: cubit.posts.isNotEmpty,
+            builder: (BuildContext context) => SingleChildScrollView(
+              child: Column(
+                children: [
+                  Card(
+                    margin: const EdgeInsets.all(8),
+                    clipBehavior: Clip.antiAlias,
+                    elevation: 5,
+                    child: Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        Image(
+                          width: double.infinity,
+                          height: 250,
+                          fit: BoxFit.cover,
+                          image: AssetImage(AppAssets.coverImage),
                         ),
-                      )
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Share your ideas",
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      color: Colors.white,
+                                    ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: cubit.posts.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      buildItemBuilder(context, cubit.posts[index], index),
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const SizedBox(
-                    height: 10,
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: cubit.posts.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        buildItemBuilder(context, cubit.posts[index], index),
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const SizedBox(
+                      height: 10,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          fallback: (BuildContext context) => const Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
-      },
-    );
+            fallback: (BuildContext context) => const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        },
+      );
   }
 
   Widget buildItemBuilder(BuildContext context, PostModel post, int index) =>
@@ -85,7 +83,7 @@ class FeedsScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     backgroundImage: NetworkImage(
-                      SocialCubit.get(context).userModel!.image!,
+                      post.image!,
                     ),
                     radius: 30,
                   ),
@@ -281,20 +279,20 @@ class FeedsScreen extends StatelessWidget {
                   Expanded(
                     child: InkWell(
                       onTap: () {},
-                      child: const Row(
+                      child: Row(
                         children: [
                           Row(
                             children: [
                               CircleAvatar(
                                 backgroundImage: NetworkImage(
-                                  'https://scontent.fcai19-2.fna.fbcdn.net/v/t1.6435-9/68965871_2428019140768142_7568072189069492224_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=N6SlZb7CCx4Q7kNvgFir-Z6&_nc_zt=23&_nc_ht=scontent.fcai19-2.fna&_nc_gid=AxDCWxKRlNXdiBWielnJeAC&oh=00_AYAsUdDJQk3lx9ydhiJ2VqlPGPxEDYwMEd2rDTtEAiNSkw&oe=67767193',
+                                  SocialCubit.get(context).userModel!.image!,
                                 ),
                                 radius: 20,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 15,
                               ),
-                              Text(
+                              const Text(
                                 'write a commit...',
                                 style: TextStyle(
                                   fontSize: 15,
