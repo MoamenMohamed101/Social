@@ -63,9 +63,9 @@ class AddPost extends StatelessWidget {
                   ),
                 Row(
                   children: [
-                    const CircleAvatar(
+                    CircleAvatar(
                       backgroundImage: NetworkImage(
-                        'https://scontent.fcai19-2.fna.fbcdn.net/v/t1.6435-9/68965871_2428019140768142_7568072189069492224_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=N6SlZb7CCx4Q7kNvgFir-Z6&_nc_zt=23&_nc_ht=scontent.fcai19-2.fna&_nc_gid=AxDCWxKRlNXdiBWielnJeAC&oh=00_AYAsUdDJQk3lx9ydhiJ2VqlPGPxEDYwMEd2rDTtEAiNSkw&oe=67767193',
+                        cubit.userModel!.image!,
                       ),
                       radius: 25,
                     ),
@@ -79,7 +79,7 @@ class AddPost extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                "Moamen Mohamed",
+                                cubit.userModel!.name!,
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodySmall!

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,15 +12,9 @@ import 'package:social/models/user_model.dart';
 import 'package:social/modules/add_post.dart';
 import 'package:social/modules/chat_items_screen.dart';
 import 'package:social/modules/feeds_screen.dart';
-import 'package:social/modules/login/login_screen.dart';
-import 'package:social/modules/posts_screen.dart';
 import 'package:social/modules/settings_screen.dart';
-import 'package:social/shared/components/components.dart';
 import 'package:social/shared/components/constants.dart';
-import 'package:social/shared/get_it_helper.dart';
-import 'package:social/shared/network/local/cache_helper.dart';
 import 'package:social/shared/styles/icon_broken.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class SocialCubit extends Cubit<SocialState> {
   SocialCubit() : super(SocialInitial());
@@ -32,8 +27,6 @@ class SocialCubit extends Cubit<SocialState> {
     const BottomNavigationBarItem(icon: Icon(IconBroken.Chat), label: "Chats"),
     const BottomNavigationBarItem(
         icon: Icon(IconBroken.Paper_Upload), label: "Post"),
-    const BottomNavigationBarItem(
-        icon: Icon(IconBroken.Location), label: "Users"),
     const BottomNavigationBarItem(
         icon: Icon(IconBroken.Setting), label: "Settings"),
   ];
@@ -83,7 +76,6 @@ class SocialCubit extends Cubit<SocialState> {
     const FeedsScreen(),
     const ChatItemsScreen(),
     AddPost(),
-    const PostsScreen(),
     const SettingsScreen(),
   ];
   List<String> appBarTexts = [
@@ -287,11 +279,12 @@ class SocialCubit extends Cubit<SocialState> {
   Future<void> getUserPosts() async {
     emit(SocialGetUserPostsLoading());
     try {
+      posts = [];
       final postsSnapshot =
           await FirebaseFirestore.instance.collection('posts').get();
       for (var element in postsSnapshot.docs) {
         final likesSnapshot = await element.reference.collection('likes').get();
-        likes.add(likesSnapshot.docs.length);
+        likes.add(likesSnapshot.docs.length); // get the number of likes for each post
         postsId.add(element.id);
         posts.add(PostModel.fromJson(element.data()));
       }

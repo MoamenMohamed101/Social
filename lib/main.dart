@@ -9,7 +9,7 @@ import 'package:social/modules/login/login_screen.dart';
 import 'package:social/shared/components/constants.dart';
 import 'package:social/shared/get_it_helper.dart';
 import 'package:social/shared/network/local/cache_helper.dart';
-// mmoamenmohamed101@gmail.com
+// moamen@gmail.com
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();

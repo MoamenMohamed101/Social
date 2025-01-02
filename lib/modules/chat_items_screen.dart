@@ -1,4 +1,3 @@
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social/layout/cubit/social_cubit.dart';
@@ -15,18 +14,22 @@ class ChatItemsScreen extends StatelessWidget {
     return BlocConsumer<SocialCubit, SocialState>(
       builder: (BuildContext context, state) {
         SocialCubit cubit = SocialCubit.get(context);
-        return ConditionalBuilder(
-          condition: cubit.allUsers.isNotEmpty,
-          builder: (BuildContext context) => ListView.separated(
-            itemCount: cubit.allUsers.length,
-            itemBuilder: (BuildContext context, int index) =>
-                chatBuildItem(context,cubit.allUsers[index]),
-            separatorBuilder: (BuildContext context, int index) =>
-                const Divider(),
-          ),
-          fallback: (BuildContext context) => const Center(
-            child: CircularProgressIndicator(),
-          ),
+        if(cubit.allUsers.isNotEmpty) {
+          return ListView.separated(
+          itemCount: cubit.allUsers.length,
+          itemBuilder: (BuildContext context, int index) =>
+              chatBuildItem(context,cubit.allUsers[index]),
+          separatorBuilder: (BuildContext context, int index) =>
+          const Divider(),
+        );
+        }
+        else if(cubit.allUsers.isEmpty) {
+          return const Center(
+            child: Text('No Users Found'),
+          );
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
         );
       },
       listener: (BuildContext context, Object? state) {},

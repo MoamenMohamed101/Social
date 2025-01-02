@@ -1,11 +1,9 @@
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social/layout/cubit/social_cubit.dart';
 import 'package:social/layout/cubit/social_state.dart';
 import 'package:social/models/message_model.dart';
 import 'package:social/models/user_model.dart';
-import 'package:social/shared/components/constants.dart';
 import 'package:social/shared/styles/icon_broken.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -45,70 +43,71 @@ class ChatScreen extends StatelessWidget {
                 ],
               ),
             ),
-            body: ConditionalBuilder(
-              condition: cubit.messages.isNotEmpty,
-              builder: (BuildContext context) => Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+            body: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if(cubit.messages.isNotEmpty)
+                  Expanded(
+                    child: ListView.separated(
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        var message = cubit.messages[index];
+                        if (cubit.userModel!.uId == message.senderId) {
+                          return buildMyMessage(cubit.messages[index]);
+                        }
+                        return buildMessage(cubit.messages[index]);
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      itemCount: cubit.messages.length,
+                    ),
+                  ),
+                  if(cubit.messages.isEmpty)
                     Expanded(
-                      child: ListView.separated(
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (BuildContext context, int index) {
-                          var message = cubit.messages[index];
-                          if (cubit.userModel!.uId == message.senderId) {
-                            return buildMyMessage(cubit.messages[index]);
-                          }
-                          return buildMessage(cubit.messages[index]);
-                        },
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const SizedBox(
-                          height: 15,
-                        ),
-                        itemCount: cubit.messages.length,
+                      child: Center(
+                        child: Text("Start Chat with ${user!.name} now"),
                       ),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.grey, width: 1),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: TextFormField(
-                                controller: textEditingController,
-                                decoration: const InputDecoration(
-                                  hintText: 'write your message..',
-                                  border: InputBorder.none,
-                                ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.grey, width: 1),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding:
+                            const EdgeInsets.symmetric(horizontal: 10),
+                            child: TextFormField(
+                              controller: textEditingController,
+                              decoration: const InputDecoration(
+                                hintText: 'write your message..',
+                                border: InputBorder.none,
                               ),
                             ),
                           ),
-                          MaterialButton(
-                            onPressed: () {
-                              cubit.sendMessage(
-                                receiverId: user!.uId!,
-                                text: textEditingController.text,
-                                dateTime: DateTime.now().toString(),
-                              );
-                              cubit.getMessages(user!.uId!);
-                            },
-                            minWidth: 1,
-                            child: const Icon(IconBroken.Send),
-                          )
-                        ],
-                      ),
+                        ),
+                        MaterialButton(
+                          onPressed: () {
+                            cubit.sendMessage(
+                              receiverId: user!.uId!,
+                              text: textEditingController.text,
+                              dateTime: DateTime.now().toString(),
+                            );
+                            cubit.getMessages(user!.uId!);
+                          },
+                          minWidth: 1,
+                          child: const Icon(IconBroken.Send),
+                        )
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              fallback: (BuildContext context) => const Center(
-                child: CircularProgressIndicator(),
+                  ),
+                ],
               ),
             ),
           );
@@ -149,7 +148,7 @@ class ChatScreen extends StatelessWidget {
             ),
           ),
           child: Text(
-              message.text!,
+            message.text!,
             style: const TextStyle(fontSize: 20),
           ),
         ),

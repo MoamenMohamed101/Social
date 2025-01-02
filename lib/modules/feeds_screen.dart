@@ -13,60 +13,75 @@ class FeedsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          SocialCubit cubit = SocialCubit.get(context);
-          return ConditionalBuilder(
-            condition: cubit.posts.isNotEmpty,
-            builder: (BuildContext context) => SingleChildScrollView(
-              child: Column(
-                children: [
-                  Card(
-                    margin: const EdgeInsets.all(8),
-                    clipBehavior: Clip.antiAlias,
-                    elevation: 5,
-                    child: Stack(
-                      alignment: Alignment.bottomRight,
-                      children: [
-                        Image(
-                          width: double.infinity,
-                          height: 250,
-                          fit: BoxFit.cover,
-                          image: AssetImage(AppAssets.coverImage),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Share your ideas",
-                            style:
-                                Theme.of(context).textTheme.bodySmall!.copyWith(
-                                      color: Colors.white,
-                                    ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: cubit.posts.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        buildItemBuilder(context, cubit.posts[index], index),
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const SizedBox(
-                      height: 10,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            fallback: (BuildContext context) => const Center(
+      listener: (context, state) {
+        if (state is SocialCreatePostSuccess ||
+            state is SocialCreatePostWithImageSuccess) {
+          SocialCubit.get(context).getUserPosts();
+        }
+      },
+      builder: (context, state) {
+        SocialCubit cubit = SocialCubit.get(context);
+        if (cubit.posts.isNotEmpty) {
+          if (state is SocialGetUserPostsLoading) {
+            return const Center(
               child: CircularProgressIndicator(),
+            );
+          }
+          else {
+            return SingleChildScrollView(
+            child: Column(
+              children: [
+                Card(
+                  margin: const EdgeInsets.all(8),
+                  clipBehavior: Clip.antiAlias,
+                  elevation: 5,
+                  child: Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      Image(
+                        width: double.infinity,
+                        height: 250,
+                        fit: BoxFit.cover,
+                        image: AssetImage(AppAssets.coverImage),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Share your ideas",
+                          style:
+                          Theme
+                              .of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: cubit.posts.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      buildItemBuilder(context, cubit.posts[index], index),
+                  separatorBuilder: (BuildContext context, int index) =>
+                  const SizedBox(
+                    height: 10,
+                  ),
+                ),
+              ],
             ),
           );
-        },
-      );
+          }
+        }
+        else {
+          return const Center(child: Text('No Posts yet!'));
+        }
+      }
+    );
   }
 
   Widget buildItemBuilder(BuildContext context, PostModel post, int index) =>
